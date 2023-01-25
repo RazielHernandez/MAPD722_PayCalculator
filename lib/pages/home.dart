@@ -89,6 +89,7 @@ class _HomeState extends State<Home> {
                             hintText: '40',
                             labelText: 'Hours',
                           ),
+                          keyboardType: TextInputType.number,
                           validator: (value) => _validateHours(value!),
                           onSaved: (value) => _payment.hours = double.parse(value!),
                         ),
@@ -97,6 +98,7 @@ class _HomeState extends State<Home> {
                             hintText: '15.5',
                             labelText: 'Hourly rate',
                           ),
+                          keyboardType: TextInputType.number,
                           validator: (value) => _validatePayRate(value!),
                           onSaved: (value) => _payment.payrate = double.parse(value!),
                         ),
@@ -104,13 +106,35 @@ class _HomeState extends State<Home> {
                         ElevatedButton(
                           child: Text('Save'),
                           //color: Colors.lightGreen,
-                          onPressed: () => _calculate(),
+                          onPressed: () {
+                            setState(() {
+                              _calculate();
+                            });
+                          }
                         ),
                       ],
                     ),
                   ),
                 ),
 
+                Container(
+                  color: Colors.lightBlueAccent,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    mainAxisSize: MainAxisSize.max,
+                    children: <Widget>[
+                      Padding(padding: EdgeInsets.all(10.0)),
+                      Text('Report',style: TextStyle(fontSize: 25)),
+                      Divider(),
+                      Text('Regular: ${_payment.payment_regular}',style: TextStyle(fontSize: 20)),
+                      Text('Extra: ${_payment.payment_extra}',style: TextStyle(fontSize: 20)),
+                      Text('Total: ${_payment.payment_total}',style: TextStyle(fontSize: 20)),
+                      Text('Taxes: ${_payment.payment_taxes}',style: TextStyle(fontSize: 20)),
+                      Divider(),
+                    ]
+                  ),
+                ),
                 AboutWidget(),
                 Divider(),
 
