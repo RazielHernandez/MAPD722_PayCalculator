@@ -37,13 +37,29 @@ class _HomeState extends State<Home> {
   }
 
   String? _validateHours(String value) {
-    double? _valueAsDouble = value.isEmpty ? 0 : double.tryParse(value);
+    double? _valueAsDouble = 0;
+    try{
+      _valueAsDouble = value.isEmpty ? 0 : double.parse(value);
+      if (_valueAsDouble < 0){
+        return 'The minimum hours is 0, no negative values allowed';
+      }
+    } on FormatException {
+      return 'Enter a valid number of hours (only numbers)';
+    }
     return _valueAsDouble == 0 ? 'The minimum hours are 1' : null;
   }
 
   String? _validatePayRate(String value) {
-    double? _valueAsDouble = value.isEmpty ? 0 : double.tryParse(value);
-    return _valueAsDouble == 0 ? 'The minimum pay rate is 15' : null;
+    double? _valueAsDouble = 0;
+    try{
+      _valueAsDouble = value.isEmpty ? 0 : double.parse(value);
+      if (_valueAsDouble < 0){
+        return 'The minimum pay rate is 0, no negative values allowed';
+      }
+    } on FormatException {
+      return 'Enter a valid pay rate (only numbers)';
+    }
+    return _valueAsDouble == 0 ? 'The minimum pay rate is 0' : null;
   }
 
   @override
@@ -91,7 +107,15 @@ class _HomeState extends State<Home> {
                           ),
                           keyboardType: TextInputType.number,
                           validator: (value) => _validateHours(value!),
-                          onSaved: (value) => _payment.hours = double.parse(value!),
+                          /*onSaved: (value) {
+                            try{
+                              _payment.hours = double.parse(value!);
+                            } on FormatException {
+                              print('Input error');
+                              _payment.hours = 0;
+                            }
+                          }*/
+                          onSaved: (value) => _payment.hours = double.tryParse(value!)!,
                         ),
                         TextFormField(
                           decoration:  InputDecoration(
@@ -100,7 +124,15 @@ class _HomeState extends State<Home> {
                           ),
                           keyboardType: TextInputType.number,
                           validator: (value) => _validatePayRate(value!),
-                          onSaved: (value) => _payment.payrate = double.parse(value!),
+                          /*onSaved: (value) {
+                            try{
+                              _payment.payrate = double.parse(value!);
+                            } on FormatException {
+                              print('Input error');
+                              _payment.payrate = 0;
+                            }
+                          }*/
+                          onSaved: (value) => _payment.payrate = double.tryParse(value!)!,
                         ),
                         Divider(height: 32.0,),
                         ElevatedButton(
